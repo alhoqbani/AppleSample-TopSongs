@@ -33,7 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
+        // Print documents directory to check the sqlite file
+        print("Document Directory: \(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.path)")
         
         importer = iTunesJSONImporter(iTunesURL: iTunesURL, persistentStoreCoordinator: self.persistentContainer.persistentStoreCoordinator)
         importer?.delegat = self

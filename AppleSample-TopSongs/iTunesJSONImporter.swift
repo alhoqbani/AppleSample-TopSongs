@@ -18,6 +18,15 @@ class iTunesJSONImporter {
     var theCache: CategoryCache?
     var sessionTask: URLSessionTask?
     
+    
+    // CoreData managedContext to insert records
+    lazy var insertionContext: NSManagedObjectContext = {
+        let mangedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        mangedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
+        
+        return mangedObjectContext
+    }()
+    
     init(iTunesURL: URL, persistentStoreCoordinator: NSPersistentStoreCoordinator) {
         self.iTunesURL = iTunesURL
         self.persistentStoreCoordinator = persistentStoreCoordinator
@@ -44,7 +53,28 @@ class iTunesJSONImporter {
                 decoder.dateDecodingStrategy = .formatted(formatter)
                 
                 let json = try decoder.decode(TopSongsFeed.self, from: data)
-                print(json.feed.results.count)
+                
+                // Store the results in CoreData
+                
+                for (index, result) in json.feed.results.enumerated() {
+                   
+                    let song = Song(context: self.insertionContext)
+                    song.album = result.collectionName
+                    song.artist = result.artistName
+                    song.releaseDate = result.releaseDate
+                    song.title = result.name
+                    song.rank = (index + 1) as NSNumber
+                    
+                    do {
+                        try self.insertionContext.save()
+                        
+                    } catch {
+                        print(error)
+                    }
+                }
+                
+                
+                
             } catch {
                 print(error)
             }
