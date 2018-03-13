@@ -13,10 +13,32 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    // Properties for the importer and its background processing queue.
+    var importer: iTunesJSONImporter?
+    
+    // Properties for the Core Data stack.
+    var managedObjectContext: NSManagedObjectContext?
+    var persistentStoreCoordinator: NSPersistentStoreCoordinator?
+    var persistentStorePath: String?
+    
+    // The number of songs to be retrieved from the RSS feed.
+    var importSize = 100
+    lazy var iTunesURL: URL = {
+        let urlString = "https://rss.itunes.apple.com/api/v1/us/itunes-music/top-songs/all/\(importSize)/explicit.json"
+        
+        return URL(string: urlString)!
+    }()
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        
+        importer = iTunesJSONImporter(iTunesURL: iTunesURL, persistentStoreCoordinator: self.persistentContainer.persistentStoreCoordinator)
+        importer?.delegat = self
+        application.isNetworkActivityIndicatorVisible = true
+        
         return true
     }
 
@@ -53,7 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          application to it. This property is optional since there are legitimate
          error conditions that could cause the creation of the store to fail.
         */
-        let container = NSPersistentContainer(name: "AppleSample_TopSongs")
+        let container = NSPersistentContainer(name: "TopSongs")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
@@ -89,5 +111,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+}
+
+//: MARK: iTunesJSONImporterDelegate
+extension AppDelegate: iTunesJSONImporterDelegate {
 }
 
