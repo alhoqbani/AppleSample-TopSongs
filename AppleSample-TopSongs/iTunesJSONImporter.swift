@@ -14,7 +14,7 @@ class iTunesJSONImporter {
     
     var iTunesURL: URL
     var persistentStoreCoordinator: NSPersistentStoreCoordinator
-    var delegat: iTunesJSONImporterDelegate?
+    var delegate: iTunesJSONImporterDelegate?
     var theCache: CategoryCache?
     var sessionTask: URLSessionTask?
     

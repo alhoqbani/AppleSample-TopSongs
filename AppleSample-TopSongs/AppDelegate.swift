@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("Document Directory: \(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.path)")
         
         importer = iTunesJSONImporter(iTunesURL: iTunesURL, persistentStoreCoordinator: self.persistentContainer.persistentStoreCoordinator)
-        importer?.delegat = self
+        importer?.delegate = self
         application.isNetworkActivityIndicatorVisible = true
         
         return true
