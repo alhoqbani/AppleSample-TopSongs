@@ -8,22 +8,33 @@
 
 /* Begin PBXBuildFile section */
 		775129E0205847E800B35FA4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775129DF205847E800B35FA4 /* AppDelegate.swift */; };
-		775129E2205847E800B35FA4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775129E1205847E800B35FA4 /* ViewController.swift */; };
 		775129E5205847E800B35FA4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 775129E3205847E800B35FA4 /* Main.storyboard */; };
-		775129E8205847E800B35FA4 /* AppleSample_TopSongs.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 775129E6205847E800B35FA4 /* AppleSample_TopSongs.xcdatamodeld */; };
 		775129EA205847E800B35FA4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 775129E9205847E800B35FA4 /* Assets.xcassets */; };
 		775129ED205847E800B35FA4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 775129EB205847E800B35FA4 /* LaunchScreen.storyboard */; };
+		775129F42058480300B35FA4 /* TopSongs.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 775129E6205847E800B35FA4 /* TopSongs.xcdatamodeld */; };
+		775129FA20584A3D00B35FA4 /* SongsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775129F920584A3D00B35FA4 /* SongsViewController.swift */; };
+		775129FC20584A4B00B35FA4 /* SongDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775129FB20584A4B00B35FA4 /* SongDetailsViewController.swift */; };
+		775129FE20584A7600B35FA4 /* iTunesJSONImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775129FD20584A7600B35FA4 /* iTunesJSONImporter.swift */; };
+		77512A0020584A8600B35FA4 /* CategoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775129FF20584A8600B35FA4 /* CategoryCache.swift */; };
+		77512A032058519200B35FA4 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77512A022058519200B35FA4 /* Category.swift */; };
+		77512A052058519A00B35FA4 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77512A042058519A00B35FA4 /* Song.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		775129DC205847E800B35FA4 /* AppleSample-TopSongs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppleSample-TopSongs.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		775129DF205847E800B35FA4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		775129E1205847E800B35FA4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		775129E4205847E800B35FA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		775129E7205847E800B35FA4 /* AppleSample_TopSongs.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppleSample_TopSongs.xcdatamodel; sourceTree = "<group>"; };
 		775129E9205847E800B35FA4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		775129EC205847E800B35FA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		775129EE205847E800B35FA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		775129F920584A3D00B35FA4 /* SongsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsViewController.swift; sourceTree = "<group>"; };
+		775129FB20584A4B00B35FA4 /* SongDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongDetailsViewController.swift; sourceTree = "<group>"; };
+		775129FD20584A7600B35FA4 /* iTunesJSONImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesJSONImporter.swift; sourceTree = "<group>"; };
+		775129FF20584A8600B35FA4 /* CategoryCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCache.swift; sourceTree = "<group>"; };
+		77512A012058511A00B35FA4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		77512A022058519200B35FA4 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		77512A042058519A00B35FA4 /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +51,7 @@
 		775129D3205847E800B35FA4 = {
 			isa = PBXGroup;
 			children = (
+				77512A012058511A00B35FA4 /* README.md */,
 				775129DE205847E800B35FA4 /* AppleSample-TopSongs */,
 				775129DD205847E800B35FA4 /* Products */,
 			);
@@ -56,15 +68,52 @@
 		775129DE205847E800B35FA4 /* AppleSample-TopSongs */ = {
 			isa = PBXGroup;
 			children = (
-				775129DF205847E800B35FA4 /* AppDelegate.swift */,
-				775129E1205847E800B35FA4 /* ViewController.swift */,
-				775129E3205847E800B35FA4 /* Main.storyboard */,
-				775129E9205847E800B35FA4 /* Assets.xcassets */,
-				775129EB205847E800B35FA4 /* LaunchScreen.storyboard */,
-				775129EE205847E800B35FA4 /* Info.plist */,
-				775129E6205847E800B35FA4 /* AppleSample_TopSongs.xcdatamodeld */,
+				775129F5205849A600B35FA4 /* Application */,
+				775129F6205849B300B35FA4 /* Controllers */,
+				775129F7205849BD00B35FA4 /* Model */,
+				775129F8205849C500B35FA4 /* Resources */,
 			);
 			path = "AppleSample-TopSongs";
+			sourceTree = "<group>";
+		};
+		775129F5205849A600B35FA4 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				775129DF205847E800B35FA4 /* AppDelegate.swift */,
+				775129FD20584A7600B35FA4 /* iTunesJSONImporter.swift */,
+				775129FF20584A8600B35FA4 /* CategoryCache.swift */,
+			);
+			name = Application;
+			sourceTree = "<group>";
+		};
+		775129F6205849B300B35FA4 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				775129F920584A3D00B35FA4 /* SongsViewController.swift */,
+				775129FB20584A4B00B35FA4 /* SongDetailsViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		775129F7205849BD00B35FA4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				775129E6205847E800B35FA4 /* TopSongs.xcdatamodeld */,
+				77512A022058519200B35FA4 /* Category.swift */,
+				77512A042058519A00B35FA4 /* Song.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		775129F8205849C500B35FA4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				775129E9205847E800B35FA4 /* Assets.xcassets */,
+				775129EE205847E800B35FA4 /* Info.plist */,
+				775129E3205847E800B35FA4 /* Main.storyboard */,
+				775129EB205847E800B35FA4 /* LaunchScreen.storyboard */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,9 +188,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				775129E2205847E800B35FA4 /* ViewController.swift in Sources */,
-				775129E8205847E800B35FA4 /* AppleSample_TopSongs.xcdatamodeld in Sources */,
+				77512A0020584A8600B35FA4 /* CategoryCache.swift in Sources */,
+				775129F42058480300B35FA4 /* TopSongs.xcdatamodeld in Sources */,
+				775129FE20584A7600B35FA4 /* iTunesJSONImporter.swift in Sources */,
+				775129FA20584A3D00B35FA4 /* SongsViewController.swift in Sources */,
+				77512A052058519A00B35FA4 /* Song.swift in Sources */,
+				775129FC20584A4B00B35FA4 /* SongDetailsViewController.swift in Sources */,
 				775129E0205847E800B35FA4 /* AppDelegate.swift in Sources */,
+				77512A032058519200B35FA4 /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,13 +382,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		775129E6205847E800B35FA4 /* AppleSample_TopSongs.xcdatamodeld */ = {
+		775129E6205847E800B35FA4 /* TopSongs.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				775129E7205847E800B35FA4 /* AppleSample_TopSongs.xcdatamodel */,
 			);
 			currentVersion = 775129E7205847E800B35FA4 /* AppleSample_TopSongs.xcdatamodel */;
-			path = AppleSample_TopSongs.xcdatamodeld;
+			path = TopSongs.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
