@@ -30,6 +30,9 @@
                                                 <segment title="Rank Only"/>
                                                 <segment title="Categorize"/>
                                             </segments>
+                                            <connections>
+                                                <action selector="changeFetchSectioning:" destination="dSe-2n-xkF" eventType="valueChanged" id="ZHI-LB-SlW"/>
+                                            </connections>
                                         </segmentedControl>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="7yY-na-8HX"/>
@@ -79,6 +82,10 @@
                         <viewLayoutGuide key="safeArea" id="PiS-a8-vqi"/>
                     </view>
                     <navigationItem key="navigationItem" title="Top Songs" id="Aqe-uh-KV1"/>
+                    <connections>
+                        <outlet property="fetchSectioningControl" destination="Xtd-uL-POE" id="XnM-Df-xki"/>
+                        <outlet property="tableView" destination="XQf-zc-ija" id="WET-bc-kbC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="elp-om-YMP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

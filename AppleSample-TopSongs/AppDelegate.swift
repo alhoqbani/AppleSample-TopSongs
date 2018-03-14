@@ -39,6 +39,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         importer = iTunesJSONImporter(iTunesURL: iTunesURL, persistentStoreCoordinator: self.persistentContainer.persistentStoreCoordinator)
         importer?.delegate = self
         application.isNetworkActivityIndicatorVisible = true
+
+        // Inject SongsViewController managedObjectContext.
+        if let vc = window?.rootViewController as? UINavigationController, let songsViewController = vc.visibleViewController as? SongsViewController {
+            songsViewController.managedObjectContext = self.persistentContainer.viewContext
+        }
         
         return true
     }

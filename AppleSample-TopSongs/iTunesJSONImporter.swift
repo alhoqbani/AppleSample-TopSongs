@@ -77,14 +77,12 @@ class iTunesJSONImporter {
                         let categories = try self.insertionContext.fetch(fetchRequest)
                         
                         if let category = categories.first {
-                            print("Category \(genreName) was found")
                             song.category = category
                         // We need to create new category
                         } else {
-                            print("Creating category \(genreName)")
                             let category = Category(context: self.insertionContext)
                             category.name = genreName
-                            // We save before assiging the cateogry to avoid dangling reference to an invalid object
+                            // We save before assiging the cateogry to avoid dangling reference to an invalid object (Does not Work)
                             // But, do we need to fetch the category again?!!
                             try self.insertionContext.save()
                             song.category = try self.insertionContext.fetch(fetchRequest).first!

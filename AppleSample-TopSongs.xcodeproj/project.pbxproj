@@ -11,7 +11,6 @@
 		775129E5205847E800B35FA4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 775129E3205847E800B35FA4 /* Main.storyboard */; };
 		775129EA205847E800B35FA4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 775129E9205847E800B35FA4 /* Assets.xcassets */; };
 		775129ED205847E800B35FA4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 775129EB205847E800B35FA4 /* LaunchScreen.storyboard */; };
-		775129F42058480300B35FA4 /* TopSongs.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 775129E6205847E800B35FA4 /* TopSongs.xcdatamodeld */; };
 		775129FA20584A3D00B35FA4 /* SongsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775129F920584A3D00B35FA4 /* SongsViewController.swift */; };
 		775129FC20584A4B00B35FA4 /* SongDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775129FB20584A4B00B35FA4 /* SongDetailsViewController.swift */; };
 		775129FE20584A7600B35FA4 /* iTunesJSONImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775129FD20584A7600B35FA4 /* iTunesJSONImporter.swift */; };
@@ -19,6 +18,7 @@
 		77512A032058519200B35FA4 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77512A022058519200B35FA4 /* Category.swift */; };
 		77512A052058519A00B35FA4 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77512A042058519A00B35FA4 /* Song.swift */; };
 		77512A0720585F6200B35FA4 /* TopSongsFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77512A0620585F6200B35FA4 /* TopSongsFeed.swift */; };
+		779321662058B08400CD6211 /* TopSongs.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 775129E6205847E800B35FA4 /* TopSongs.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -192,13 +192,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				77512A0020584A8600B35FA4 /* CategoryCache.swift in Sources */,
-				775129F42058480300B35FA4 /* TopSongs.xcdatamodeld in Sources */,
 				775129FE20584A7600B35FA4 /* iTunesJSONImporter.swift in Sources */,
 				775129FA20584A3D00B35FA4 /* SongsViewController.swift in Sources */,
 				77512A052058519A00B35FA4 /* Song.swift in Sources */,
 				775129FC20584A4B00B35FA4 /* SongDetailsViewController.swift in Sources */,
 				775129E0205847E800B35FA4 /* AppDelegate.swift in Sources */,
 				77512A0720585F6200B35FA4 /* TopSongsFeed.swift in Sources */,
+				779321662058B08400CD6211 /* TopSongs.xcdatamodeld in Sources */,
 				77512A032058519200B35FA4 /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
