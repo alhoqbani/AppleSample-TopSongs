@@ -21,7 +21,7 @@ class iTunesJSONImporter: Operation {
     
     // CoreData managedContext to insert records
     lazy var insertionContext: NSManagedObjectContext = {
-        let mangedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        let mangedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         mangedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
         
         return mangedObjectContext
