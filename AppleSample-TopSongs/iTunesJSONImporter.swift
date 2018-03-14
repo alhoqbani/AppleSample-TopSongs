@@ -17,6 +17,14 @@ class iTunesJSONImporter: Operation {
     var delegate: iTunesJSONImporterDelegate?
     var theCache: CategoryCache?
     var sessionTask: URLSessionTask?
+    var decoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-mm-dd"
+        decoder.dateDecodingStrategy = .formatted(formatter)
+
+        return decoder
+    }()
     
     
     // CoreData managedContext to insert records
@@ -60,13 +68,7 @@ class iTunesJSONImporter: Operation {
             }
             
             do {
-                let decoder = JSONDecoder()
-                
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyy-mm-dd"
-                decoder.dateDecodingStrategy = .formatted(formatter)
-                
-                let json = try decoder.decode(TopSongsFeed.self, from: data)
+                let json = try self.decoder.decode(TopSongsFeed.self, from: data)
                 
                 // Store the results in CoreData
                 
