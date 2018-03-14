@@ -83,7 +83,7 @@ class iTunesJSONImporter: Operation {
             do {
 
                 let json = try strongSelf.decoder.decode(TopSongsFeed.self, from: data)
-                print(json.feed.results.count)
+
                 // Store the results in CoreData
 
                 // We need to chunk save the objects

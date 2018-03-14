@@ -180,6 +180,11 @@ extension AppDelegate: iTunesJSONImporterDelegate {
 
     func importerDidFinishParsingData(importer: iTunesJSONImporter) {
         print("importerDidFinishParsingData")
+        self.importer = nil
+        DispatchQueue.main.async {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        }
+
     }
 
     func importer(importer: iTunesJSONImporter, didFailWithError: Error) {
