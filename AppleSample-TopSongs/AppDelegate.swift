@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var persistentStorePath: String?
     
     // The number of songs to be retrieved from the RSS feed.
-    var importSize = 100
+    var importSize = 200
     lazy var iTunesURL: URL = {
         let urlString = "https://rss.itunes.apple.com/api/v1/us/itunes-music/top-songs/all/\(importSize)/explicit.json"
         

@@ -59,11 +59,37 @@ class iTunesJSONImporter {
                 for (index, result) in json.feed.results.enumerated() {
                    
                     let song = Song(context: self.insertionContext)
+                    
                     song.album = result.collectionName
                     song.artist = result.artistName
                     song.releaseDate = result.releaseDate
                     song.title = result.name
                     song.rank = (index + 1) as NSNumber
+                    
+                    // Category Assignemnt.
+                    // In JSON version, it's called genre and a song can have more than one.
+                    // We will take the first one and use as a category. Until we udpate the schema.
+                    if let genreName = result.genres.first?.name {
+                        
+                        // Check if the category already exists
+                        let fetchRequest: NSFetchRequest<Category> = Category.fetchRequest()
+                        fetchRequest.predicate = NSPredicate(format: "name == %@", genreName)
+                        let categories = try self.insertionContext.fetch(fetchRequest)
+                        
+                        if let category = categories.first {
+                            print("Category \(genreName) was found")
+                            song.category = category
+                        // We need to create new category
+                        } else {
+                            print("Creating category \(genreName)")
+                            let category = Category(context: self.insertionContext)
+                            category.name = genreName
+                            // We save before assiging the cateogry to avoid dangling reference to an invalid object
+                            // But, do we need to fetch the category again?!!
+                            try self.insertionContext.save()
+                            song.category = try self.insertionContext.fetch(fetchRequest).first!
+                        }
+                    }
                     
                     do {
                         try self.insertionContext.save()
