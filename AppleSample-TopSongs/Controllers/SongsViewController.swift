@@ -26,7 +26,7 @@ class SongsViewController: UIViewController {
         fetch()
     }
 
-    private func fetch() {
+    func fetch() {
 
         // We start with a nil frc, and we need to reset it when changeFetchSectioning set it to nil
         if fetchedResultsController == nil {
@@ -73,6 +73,7 @@ class SongsViewController: UIViewController {
         }
     }
 
+    
 }
 
 //: MARK: Table DataSource

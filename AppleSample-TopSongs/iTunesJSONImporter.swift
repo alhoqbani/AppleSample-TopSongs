@@ -33,6 +33,17 @@ class iTunesJSONImporter: Operation {
     }
     
     override func main() {
+        
+        // If we have a delgate we add him as an observer to NSManagedObjectContextDidSave notification
+        if let delegate = self.delegate {
+            NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextDidSave,
+                                                   object: self.insertionContext,
+                                                   queue: OperationQueue.main,
+                                                   using: delegate.importerDidSave)
+        }
+        
+        self.delegate?.importerDidFinishParsingData(importer: self)
+        
         fetchSongs()
     }
     
@@ -115,16 +126,16 @@ class iTunesJSONImporter: Operation {
 //: MARK: iTunesJSONImporterDelegate
 protocol iTunesJSONImporterDelegate {
     // Notification posted by NSManagedObjectContext when saved.
-    func importDidSave(saveNotification: NSNotification) -> Void
+    func importerDidSave(saveNotification: Notification) -> Void
     // Called by the importer when parsing is finished.
-    func importDidFinishParsingData(importer: iTunesJSONImporter) -> Void
+    func importerDidFinishParsingData(importer: iTunesJSONImporter) -> Void
     // Called by the importer in the case of an error.
     func importer(importer: iTunesJSONImporter, didFailWithError: Error) -> Void
 }
 
 // Make all functions optional by providing default implementation.
 extension iTunesJSONImporterDelegate {
-    func importDidSave(saveNotification: NSNotification) -> Void {}
-    func importDidFinishParsingData(importer: iTunesJSONImporter) -> Void {}
-    func importer(importer: iTunesJSONImporter, didFailWithError: Error) -> Void {}
+//    func importerDidSave(saveNotification: Notification) -> Void {}
+//    func importerDidFinishParsingData(importer: iTunesJSONImporter) -> Void {}
+//    func importer(importer: iTunesJSONImporter, didFailWithError: Error) -> Void {}
 }

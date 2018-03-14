@@ -13,6 +13,7 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var songsViewController: SongsViewController?
 
     // Properties for the importer and its background processing queue.
     var importer: iTunesJSONImporter?
@@ -20,11 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var operationQueue = OperationQueue()
 
     // Properties for the Core Data stack.
-    var managedObjectContext: NSManagedObjectContext?
     var persistentStoreCoordinator: NSPersistentStoreCoordinator?
     var persistentStorePath: URL? = {
         if let applicationSupportDirectory = try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true) {
-            print("applicationSupportDirectory exists")
             return applicationSupportDirectory.appendingPathComponent("TopSongs.sqlite")
         }
         return nil
@@ -45,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("Document Directory: \(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.path)")
 
         // Reset The Database
-//        resetDatabase()
+        resetDatabase()
 
         // create an importer object to retrieve, parse, and import into the CoreData store
         // pass the coordinator so the importer can create its own managed object context
@@ -55,11 +54,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // add the importer to an operation queue for background processing (works on a separate thread)
         self.operationQueue.addOperation(importer!)
-        
+
         // Inject SongsViewController managedObjectContext.
         // obtain our current initial view controller on the nav stack and set it's managed object context
         if let vc = window?.rootViewController as? UINavigationController, let songsViewController = vc.visibleViewController as? SongsViewController {
             songsViewController.managedObjectContext = self.persistentContainer.viewContext
+            self.songsViewController = songsViewController
         }
 
         return true
@@ -97,11 +97,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          creates and returns a container, having loaded the store for the
          application to it. This property is optional since there are legitimate
          error conditions that could cause the creation of the store to fail.
-        */
+         */
         let container = NSPersistentContainer(name: "TopSongs")
 
         if let url = self.persistentStorePath {
-            print("Changing persistentStorePath to \(url.path)")
             container.persistentStoreDescriptions.first?.url = url
         }
 
@@ -147,9 +146,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         do {
             if let url = self.persistentStorePath, FileManager.default.fileExists(atPath: url.path) {
                 try FileManager.default.removeItem(at: url)
-                print("Database file was deleted")
-            } else {
-                print("Could not find database file to delete")
             }
         } catch {
             print("Error Resetting the database: \(error)")
@@ -161,5 +157,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 //: MARK: iTunesJSONImporterDelegate
 extension AppDelegate: iTunesJSONImporterDelegate {
+
+    // This will be called when the NSManagedObjectContextDidSave notification is broadcasted.
+    // Every time we do context.save() !!
+    func importerDidSave(saveNotification: Notification) {
+
+        // guard check that where are on the main thread before reaching the viewController
+        if Thread.isMainThread {
+
+            self.persistentContainer.viewContext.mergeChanges(fromContextDidSave: saveNotification)
+            songsViewController?.fetch()
+
+        } else {
+
+            DispatchQueue.main.async {
+                self.importerDidSave(saveNotification: saveNotification)
+            }
+
+        }
+    }
+
+
+    func importerDidFinishParsingData(importer: iTunesJSONImporter) {
+        print("importerDidFinishParsingData")
+    }
+
+    func importer(importer: iTunesJSONImporter, didFailWithError: Error) {
+        print("didFailWithError")
+    }
+
 }
 
