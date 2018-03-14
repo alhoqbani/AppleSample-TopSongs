@@ -65,6 +65,12 @@ class SongsViewController: UIViewController {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        if segue.identifier == "SongDetails",
+           let songDetailsViewController = segue.destination as? SongDetailsViewController,
+           let indexPath = self.tableView.indexPathForSelectedRow {
+            songDetailsViewController.song = fetchedResultsController.object(at: indexPath)
+        }
     }
 
 }
