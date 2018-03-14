@@ -16,6 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // Properties for the importer and its background processing queue.
     var importer: iTunesJSONImporter?
+    // We will add the importer to this operationQueue
+    var operationQueue = OperationQueue()
 
     // Properties for the Core Data stack.
     var managedObjectContext: NSManagedObjectContext?
@@ -51,8 +53,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         importer?.delegate = self
         application.isNetworkActivityIndicatorVisible = true
 
-        // TODO add the importer to an operation queue for background processing (works on a separate thread)
-
+        // add the importer to an operation queue for background processing (works on a separate thread)
+        self.operationQueue.addOperation(importer!)
+        
         // Inject SongsViewController managedObjectContext.
         // obtain our current initial view controller on the nav stack and set it's managed object context
         if let vc = window?.rootViewController as? UINavigationController, let songsViewController = vc.visibleViewController as? SongsViewController {

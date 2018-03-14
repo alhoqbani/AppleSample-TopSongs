@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-class iTunesJSONImporter {
+class iTunesJSONImporter: Operation {
     
     
     var iTunesURL: URL
@@ -30,6 +30,9 @@ class iTunesJSONImporter {
     init(iTunesURL: URL, persistentStoreCoordinator: NSPersistentStoreCoordinator) {
         self.iTunesURL = iTunesURL
         self.persistentStoreCoordinator = persistentStoreCoordinator
+    }
+    
+    override func main() {
         fetchSongs()
     }
     
