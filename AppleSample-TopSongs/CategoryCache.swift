@@ -55,6 +55,22 @@ class CategoryCache {
     
     init(managedObjectContext: NSManagedObjectContext) {
         self.managedObjectContext = managedObjectContext
+        
+        // When a managed object is first created, it has a temporary managed object ID.
+        // When the managed object context in which it was created is saved, the temporary ID is replaced with a permanent ID.
+        // The temporary IDs can no longer be used to retrieve valid managed objects.
+        // The cache handles the save notification by iterating through its cache nodes and removing any nodes with temporary IDs.
+        // While it is possible force Core Data to provide a permanent ID before an object is saved, using the method -[ NSManagedObjectContext obtainPermanentIDsForObjects:error:], this method incurrs a trip to the database, resulting in degraded performance - the very thing we are trying to avoid.
+        NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextDidSave, object: nil, queue: nil) { [weak self] (notification) in
+//            print("** CategoryCache: managedObjectContext did save, we clear the cache")
+            // Just remove any object with TemporaryID
+            let objectsWithPermanentId = self?.cache.filter {
+                !$0.value.objectID.isTemporaryID
+            }
+            
+            self?.cache = objectsWithPermanentId!
+
+        }
     }
 
     deinit {
@@ -63,37 +79,24 @@ class CategoryCache {
         print("average cache miss cost: \(self.totalCacheMissCost / Double(self.cacheMissCount))")
     }
 
-    // TODO
-    // Implement the "set" accessor rather than depending on @synthesize so that we can set up registration
-    // for context save notifications.
-
-    // When a managed object is first created, it has a temporary managed object ID. When the managed object context
-    // in which it was created is saved, the temporary ID is replaced with a permanent ID. The temporary IDs can no
-    // longer be used to retrieve valid managed objects. The cache handles the save notification by iterating through
-    // its cache nodes and removing any nodes with temporary IDs.
-    // While it is possible force Core Data to provide a permanent ID before an object is saved, using the method
-    // -[ NSManagedObjectContext obtainPermanentIDsForObjects:error:], this method incurs a trip to the database,
-    // resulting in degraded performance - the very thing we are trying to avoid.
-    func managedObjectContextDidSave(notification: Notification) {
-        // Just remove any object with TemporaryID
-        cache = cache.filter {
-            !$1.objectID.isTemporaryID
-        }
-    }
-
     func categoryWithName(_ name: String) -> Category? {
 
+        // To calculate times
         let before = Date().timeIntervalSince1970
 
         // Check cache.
         if var cacheNode = cache[name] {
+            // We have the object in the cache, increase its access counter and return it.
 
             // Cache hit, update access counter.
             cacheNode.accessCounter += 1
+            
+            // We fetch the object from the mangedObject context by its objectID
             let category = managedObjectContext.object(with: cacheNode.objectID) as? Category
 
             totalCacheHitCost = Date().timeIntervalSince1970 - before
             cacheHitCount += 1
+            
             return category
         }
 
@@ -103,45 +106,39 @@ class CategoryCache {
         let fetchRequest: NSFetchRequest<Category> = Category.fetchRequest()
         let predicate = categoryNamePredicateTemplate.withSubstitutionVariables(["categoryName" : name])
         fetchRequest.predicate = predicate
+         let fetchResults = try? managedObjectContext.fetch(fetchRequest)
+        
+        if let resutls = fetchResults, resutls.count > 0 {
+            // We found the category in the store
+            // Get category from fetch.
+            category = resutls.first!
 
-        do {
-            
-            let fetchResults = try managedObjectContext.fetch(fetchRequest)
-            if fetchResults.count > 0 {
-                // Get category from fetch.
-                category = fetchResults.first!
-            } else {
-                // Category not in store, must create a new category object.
-                category = Category(context: managedObjectContext)
-                category.name = name
-            }
-            
-            // Add to cache.
-            // First check to see if cache is full.
-            if cache.count > cacheSize {
-                // Evict least recently used (LRU) item from cache.
-                let leastUsed = cache.min { (first, second) in
-                    first.value.accessCounter < second.value.accessCounter
-                }
-                
-                cache.removeValue(forKey: (leastUsed?.key)!)
-            } else {
-                // Create a new cache node.
-                cache[name] = CacheNode(objectID: category.objectID, accessCounter: 1)
-            }
-            
-            
-            totalCacheMissCost = Date().timeIntervalSince1970 - before
-            cacheMissCount += 1
-            
-            return category
-            
-        } catch {
-            print(error)
+        } else {
+            // Category not in store, must create a new category object.
+            category = Category(context: managedObjectContext)
+            category.name = name
         }
         
         
-        return nil
+        // Add to cache.
+        // First check to see if cache is full.
+        if cache.count > cacheSize {
+            // Evict least recently used (LRU) item from cache.
+            let leastUsed = cache.min { (first, second) in
+                first.value.accessCounter < second.value.accessCounter
+            }
+            
+            cache.removeValue(forKey: (leastUsed?.key)!)
+        } else {
+            // Create a new cache node.
+            cache[name] = CacheNode(objectID: category.objectID, accessCounter: 1)
+        }
+        
+        
+        totalCacheMissCost = Date().timeIntervalSince1970 - before
+        cacheMissCount += 1
+        
+        return category
     }
 
 

@@ -14,7 +14,9 @@ class iTunesJSONImporter: Operation {
     var iTunesURL: URL
     var persistentStoreCoordinator: NSPersistentStoreCoordinator
     var delegate: iTunesJSONImporterDelegate?
-    var theCache: CategoryCache?
+    lazy var theCache: CategoryCache = {
+        return CategoryCache(managedObjectContext: insertionContext)
+    }()
 
     // The number of parsed songs is tracked so that the autorelease pool for the parsing thread can be periodically
     // emptied to keep the memory footprint under control.
@@ -61,7 +63,7 @@ class iTunesJSONImporter: Operation {
         // create the session with the request and start loading the data
         let sessionConfiguration = URLSessionConfiguration.default
         session = URLSession(configuration: sessionConfiguration,
-                             delegate: self,
+                             delegate: nil,
                              delegateQueue: nil // This IMPORTANT !! the core data was breaking b/c were/not on the main queue?
         )
         sessionTask = session?.dataTask(with: iTunesURL, completionHandler: { [weak self] (data: Data?, response: URLResponse?, error: Error?) -> Void in
@@ -104,20 +106,7 @@ class iTunesJSONImporter: Operation {
                     // In JSON version, it's called genre and a song can have more than one.
                     // We will take the first one and use as a category. Until we udpate the schema.
                     if let genreName = result.genres.first?.name {
-
-                        // Check if the category already exists
-                        let fetchRequest: NSFetchRequest<Category> = Category.fetchRequest()
-                        fetchRequest.predicate = NSPredicate(format: "name == %@", genreName)
-                        let categories = try strongSelf.insertionContext.fetch(fetchRequest)
-
-                        if let category = categories.first {
-                            song.category = category
-                            // We need to create new category
-                        } else {
-                            let category = Category(context: strongSelf.insertionContext)
-                            category.name = genreName
-                            song.category = category
-                        }
+                        song.category = strongSelf.theCache.categoryWithName(genreName)
                     }
 
                     songs.append(song)
@@ -141,13 +130,16 @@ class iTunesJSONImporter: Operation {
             }
             
             
-//                do {
-//                    try strongSelf.insertionContext.save()
-//                } catch {
-//                    print(error)
-//                }
-
-            
+            // Save extra songs if any,
+            strongSelf.insertionContext.performAndWait {
+                do {
+                    if strongSelf.insertionContext.hasChanges {
+                        try strongSelf.insertionContext.save()
+                    }
+                } catch {
+                    print(error)
+                }
+            }
 
             // We remove our delegate from NSManagedObjectContextDidSave notification
             if let delegate = strongSelf.delegate {
@@ -162,21 +154,6 @@ class iTunesJSONImporter: Operation {
         sessionTask?.resume()
     }
 
-}
-
-//: MARK: URLSessionDelegate
-extension iTunesJSONImporter: URLSessionDataDelegate {
-
-    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        print(data)
-
-        print(Thread.current)
-
-    }
-
-    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        print(error)
-    }
 }
 
 //: MARK: iTunesJSONImporterDelegate

@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }()
 
     // The number of songs to be retrieved from the RSS feed.
-    var importSize = 200
+    var importSize = 190
     lazy var iTunesURL: URL = {
         let urlString = "https://rss.itunes.apple.com/api/v1/us/itunes-music/top-songs/all/\(importSize)/explicit.json"
 
@@ -144,9 +144,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func resetDatabase() {
 
         do {
-            if let url = self.persistentStorePath, FileManager.default.fileExists(atPath: url.path) {
-                try FileManager.default.removeItem(at: url)
-            }
+            let dir = try FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            try FileManager.default.removeItem(at: dir)
+
         } catch {
             print("Error Resetting the database: \(error)")
         }
